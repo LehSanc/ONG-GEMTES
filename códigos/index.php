@@ -151,8 +151,8 @@ $mysqli->close();
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/index.css" class="css">
-  <link rel="stylesheet" href="../css/responsive.css" class="css">
+  <link rel="stylesheet" href="./css/index.css" class="css">
+  <link rel="stylesheet" href="./css/responsive.css" class="css">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -170,7 +170,7 @@ $mysqli->close();
     <nav class="navbar fixed-top">
       <div class="container m-0 p-0">
         <a class="navbar-brand" href="#">
-          <img src="../Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+          <img src="./Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
         </a>
       </div>
 
@@ -215,7 +215,7 @@ $mysqli->close();
           <div class="card-body text-center">
             <div class="d-flex flex-row mb-3 align-items-center">
               <div class="p-2 bloquinhos">
-                <img src="../Imagens/bloquinhos.png" class="img-thumbnail" alt="...">
+                <img src="./Imagens/bloquinhos.png" class="img-thumbnail" alt="...">
               </div>
 
               <div class="p-2">
