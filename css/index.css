@@ -1,0 +1,64 @@
+/* estilo index */
+
+:root {
+    --branco: white;
+    --preto: black;
+    --cinza: #e0dcdc;
+    --azul: #10a1df;
+}
+
+/* estilo navbar */
+
+.navbar {
+    background-color: var(--branco);
+    position: sticky !important;
+}
+
+/* estilo toast */
+
+.toast-container {
+    color: var(--preto) !important;
+    z-index: 999;
+}
+
+/* estilo body */
+
+body {
+    height: 100vh;
+    background-image: url(../Imagens/FundoColorido.png);
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    width: 100%;
+}
+
+.interface {
+    max-width: 900px;
+    padding: 4%;
+}
+
+/* estilo hero */
+
+section.hero-site {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+/* estilo card */
+
+.card {
+    height: 40vh;
+    width: auto;
+}
+
+/* estilo formulário senha */
+
+.formularioSenha {
+    display: none;
+}
