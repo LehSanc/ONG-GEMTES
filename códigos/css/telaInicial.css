@@ -1,0 +1,31 @@
+/* estilo tela inicial */
+
+:root {
+    --branco: white;
+    --preto: black;
+    --cinza: #e0dcdc;
+    --azul: #10a1df;
+}
+
+/* estilo navbar */
+
+.navbar {
+    background-color: var(--branco);
+}
+
+/* estilo do body */
+
+.interface {
+    padding: 2%;
+}
+
+/* estilo hero */
+
+section.hero-site {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}

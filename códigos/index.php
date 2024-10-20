@@ -36,8 +36,8 @@ function verificarSenha($cpf, $senha)
 {
   global $mensagem, $mysqli;
 
-  // id = 1 user comum, id = 2 adiministrador, id = NULL usuário novo que precisa definir senha
-  $stmt = $mysqli->prepare("SELECT `senha`, `ID` FROM usuarios WHERE `CPF` = '$cpf'"); // Preparar a consulta
+  // o ID define o tipo de usuário: id = 1 user comum, id = 2 adiministrador, id = NULL usuário novo que precisa definir senha
+  $stmt = $mysqli->prepare("SELECT `senha`, `ID_usuario` FROM usuarios WHERE `CPF` = '$cpf'"); // Preparar a consulta
 
   if ($stmt === false)
     die("Erro na preparação: " . $mysqli->error);
@@ -48,7 +48,7 @@ function verificarSenha($cpf, $senha)
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc(); //obter os dados do usuario
 
-    if ($row['ID'] == NULL) {
+    if ($row['ID_usuario'] == NULL) {
       $mensagem[] = "Novo por aqui? Vá para a sessão 'esqueci senha' e defina uma senha!";
       return false;
     } else {
@@ -57,10 +57,10 @@ function verificarSenha($cpf, $senha)
 
         $caminho = "./user/telaInicial.php";
 
-        if ($row['id_terapeuta'] == 1)
+        if ($row['ID_usuario'] == 2)
           $caminho = "./adm/ADMtelaInicial.php";
 
-        echo "<script>alert('Login efetuado com sucesso'); location.href = '$caminho';</script>";
+        echo "<script>location.href = '$caminho';</script>";
       } else {
         $mensagem[] = "Senha incorreta";
       }
@@ -98,7 +98,7 @@ function alterarSenha($cpf, $senha)
   global $mensagem, $mysqli;
 
   $nova_senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-  $stmt = $mysqli->prepare("UPDATE usuarios SET `ID` = 1, `senha` = '$nova_senha_hash', `codigo` = ' ' WHERE `CPF` = '$cpf'");
+  $stmt = $mysqli->prepare("UPDATE usuarios SET `ID_usuario` = 1, `senha` = '$nova_senha_hash', `codigo` = ' ' WHERE `CPF` = '$cpf'");
   if ($stmt === false) {
     die("Erro na preparação da atualização: " . $mysqli->error);
   }
@@ -113,7 +113,7 @@ function alterarSenha($cpf, $senha)
 if (isset($_POST['entrar'])) {
   if (isset($_POST['CPFentrar']) && isset($_POST['senha'])) {
     $cpf = $_POST['CPFentrar'];
-    $senha = $_POST['senha'];
+    $senha = trim($_POST['senha']);
 
     if (verificarCPF($cpf)) {
       verificarSenha($cpf, $senha);
@@ -125,9 +125,9 @@ if (isset($_POST['alterar'])) {
   if (isset($_POST['CPFsenha']) && isset($_POST['codigo']) && isset($_POST['senha1']) && isset($_POST['senha2'])) {
 
     $cpf = $_POST['CPFsenha'];
-    $codigo = $_POST['codigo'];
-    $senha1 = $_POST['senha1'];
-    $senha2 = $_POST['senha2'];
+    $codigo = trim($_POST['codigo']);
+    $senha1 = trim($_POST['senha1']);
+    $senha2 = trim($_POST['senha2']);
 
     if (verificarCPF($cpf)) {
       if (verificarCodigo($cpf, $codigo)) {
@@ -214,7 +214,7 @@ $mysqli->close();
 
           <div class="card-body text-center">
             <div class="d-flex flex-row mb-3 align-items-center">
-              <div class="p-2 bloquinhos">
+              <div class="p-2 container-sm">
                 <img src="./Imagens/bloquinhos.png" class="img-thumbnail" alt="...">
               </div>
 

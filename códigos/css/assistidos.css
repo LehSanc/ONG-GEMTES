@@ -1,0 +1,53 @@
+/* estilo tela assistidos */
+
+:root {
+    --branco: white;
+    --preto: black;
+    --cinza: #e0dcdc;
+    --azul: #10a1df;
+}
+
+/* estilo navbar */
+
+.navbar {
+    background-color: var(--branco);
+}
+
+/* estilo body */
+
+body {
+    height: 100vh;
+    background-image: url(../Imagens/quebraCabeca.png);
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    width: 100%;
+}
+
+.interface {
+    display: flex;
+    justify-content: center;
+}
+
+/* estilo hero */
+
+section.hero-site {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* estilo card */
+
+.card {
+    background-color: #ffffff00 !important;
+    border: none !important;
+}
+
+/* estilo section para resultados da busca */
+
+.result-cards {
+    width: 100%;
+    padding: 4%;
+}
