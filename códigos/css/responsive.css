@@ -8,13 +8,15 @@
     }
 
     .telaInicial {
-        height: 100vh;
         background-image: url(../Imagens/bloquinhos.png);
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        width: 100%;
+    }
+
+    .card.img-adulto {
+        display: none;
+    }
+
+    .telaUsuario {
+        background-image: url(../Imagens/quebraCabecaMobile.png);
+        background-position: left;
     }
 }

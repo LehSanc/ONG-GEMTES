@@ -1,13 +1,29 @@
 <?php
+include("../conexao.php");
 include("../protect.php");
 protect();
 
 $mensagem = [];
 
 if ($_SESSION['sucesso'] == 1) {
-    $mensagem[] = "Operação realizada com sucesso!";
+    $mensagem[] = "Alteração realizada com sucesso!";
     $_SESSION['sucesso'] = 0;
 }
+
+$stmt = $mysqli->prepare("SELECT * FROM `assistidos`"); // Preparar a consulta
+if ($stmt === false) {
+    die("Erro na preparação: " . $mysqli->error);
+}
+
+$stmt->execute(); //executar consulta
+$result = $stmt->get_result(); //obter resultado
+
+if (isset($_POST['editar_btn'])) {
+    $_SESSION['ID_assistido'] = $_POST['ID_assistido'];
+    header('Location: editarAssistido.php');
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +33,7 @@ if ($_SESSION['sucesso'] == 1) {
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/telaInicial.css" class="css">
+    <link rel="stylesheet" href="../css/assistidos.css" class="css">
     <link rel="stylesheet" href="../css/responsive.css" class="css">
 
     <!-- Bootstrap -->
@@ -26,11 +42,11 @@ if ($_SESSION['sucesso'] == 1) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- /Bootstrap -->
 
-    <title>Tela inicial</title>
+    <title>Assistidos</title>
 
 </head>
 
-<body class="telaInicial">
+<body>
 
     <header>
         <nav class="navbar sticky-top">
@@ -76,57 +92,92 @@ if ($_SESSION['sucesso'] == 1) {
         </nav>
     </header>
 
-    <div aria-live="polite" aria-atomic="true">
-        <div class="toast-container p-3">
-
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <strong class="me-auto">Gemtes</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    <?php foreach ($mensagem as $msg) {
-                        echo $msg;
-                    } ?>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <section class="hero-site">
         <div class="interface">
 
-            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-                <div class="card-body">
-                    <div class="d-flex flex-row mb-3">
-                        <div class="p-2">
-                            <div class="d-flex flex-column mb-3">
-                                <div class="p-2">
-                                    <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Bem-vindo de volta!</h1>
-                                </div>
-                                <div class="p-2">
-                                    <p class="lead">O que você quer fazer?</p>
-                                </div>
-                                <div class="p-2">
-                                    <button type="button" class="btn btn-primary">
-                                        <a class="link-body-emphasis text-decoration-none" href="./ADMassistidos.php">Ver assistidos</a>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        <a class="link-body-emphasis text-decoration-none" href="./ADMavaliacoes.php">Avaliações</a>
-                                    </button>
-                                </div>
-                            </div>
+            <div aria-live="polite" aria-atomic="true">
+                <div class="toast-container p-3">
 
-
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">Gemtes</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
-                        <div class="p-2">
-                            <img class="rounded-lg-3 imagemTelaInicial" src="../Imagens/bloquinhos.png" alt="Desenho pessoas montando blocos" height="420">
+                        <div class="toast-body">
+                            <?php foreach ($mensagem as $msg) {
+                                echo $msg;
+                            } ?>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div class="card text-center">
+                <div class="card-body">
+
+                    <div class="d-flex flex-column mb-3">
+                        <div class="p-2">
+                            <img class="d-block mx-auto" src="../Imagens/fotokid.png" alt="" height="155">
+                        </div>
+                        <div class="p-2">
+                            <h1 class="display-5 fw-bold text-body-emphasis">Seus assistidos</h1>
+                        </div>
+                        <div class="p-2">
+                            <p class="lead mb-4">Cadastre um novo assistido ou role para baixo para ver os já existentes.</p>
+                        </div>
+                        <div class="p-2">
+                            <button class="btn btn-primary d-inline-flex align-items-center " type="button">
+                                <a href="./cadastrarAssistido.php" class="text-white text-decoration-none">Cadastrar assistido</a>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
+    </section>
+
+    <section class="result-cards">
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+            <?php
+            if ($result->num_rows > 0) {
+
+                while ($row = $result->fetch_assoc()) {
+                    echo '
+
+        <div class="col">
+
+            <div class="text-center card h-100">
+                <div class="card-header">
+                    <div class="fs-5 fw-light">Responsável: ' . $row['nome_responsavel'] . '</div>
+                    <div class="fs-5 fw-light">Parentesco: ' . $row['parentesco'] . '</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Nome assistido : ' . $row['nome_assistido'] . '</h5>
+                    <div class="fs-5 fw-light">Idade cognitiva: ' . $row['idade_cognitiva'] . '</div>
+                    <div class="fs-5 fw-light">Nascimento: ' . $row['data_nascimento'] . '</div>
+                    <div class="fs-5 fw-light">Encaminhamento: ' . $row['encaminhamento'] . '</div>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    <form method="POST" action="">
+                        <input type="submit" name="editar_btn" value="Editar" class="btn btn-primary">
+                        <input type="hidden" name="ID_assistido" value="' . $row['ID_assistido'] . '">
+                    </form>
+                </div>
+            </div>
+
+        </div>';
+                }
+                $stmt->close(); //fechar declaração
+            }
+            ?>
+
+        </div>
+
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

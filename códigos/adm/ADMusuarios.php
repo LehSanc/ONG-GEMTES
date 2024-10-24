@@ -5,24 +5,53 @@ protect();
 
 $mensagem = [];
 
-if ($_SESSION['sucesso'] == 1) {
-    $mensagem[] = "Alteração realizada com sucesso!";
-    $_SESSION['sucesso'] = 0;
+if (isset($_POST['excluir_btn'])) {
+    $CPF = $_POST['CPF'];
+
+    $stmt = $mysqli->prepare("DELETE FROM `usuarios` WHERE `CPF` = '$CPF'"); // Preparar a consulta
+    if ($stmt === false) {
+        die("Erro na preparação: " . $mysqli->error);
+    }
+
+    $stmt->execute(); //executar consulta
+    $result = $stmt->get_result(); //obter resultado
+    if ($stmt->affected_rows > 0) {
+        $_SESSION['sucesso'] = 1;
+        header('Location: ./ADMtelaInicial.php');
+    } else {
+        $mensagem[] = "Erro ao excluir usuário.";
+    }
+    $stmt->close();
 }
 
-$stmt = $mysqli->prepare("SELECT * FROM `assistidos`"); // Preparar a consulta
+if (isset($_POST['ADM_btn'])) {
+    if (isset($_POST['ID_usuario']) == 1) {
+        $CPF = strtolower($_POST['CPF']);
+
+        $stmt = $mysqli->prepare("UPDATE `usuarios` SET `ID_usuario`='2' WHERE `CPF` = '$CPF'"); // Preparar a consulta
+        if ($stmt === false) {
+            die("Erro na preparação: " . $mysqli->error);
+        }
+
+        $stmt->execute(); //executar consulta
+        $result = $stmt->get_result(); //obter resultado
+        if ($stmt->affected_rows > 0) {
+            $_SESSION['sucesso'] = 1;
+            header('Location: ./ADMtelaInicial.php');
+        } else {
+            $mensagem[] = "Erro ao efetuar operação.";
+        }
+        $stmt->close();
+    }
+}
+
+$stmt = $mysqli->prepare("SELECT * FROM `usuarios` where `CPF` != $_SESSION[CPF]"); // Preparar a consulta
 if ($stmt === false) {
     die("Erro na preparação: " . $mysqli->error);
 }
 
 $stmt->execute(); //executar consulta
 $result = $stmt->get_result(); //obter resultado
-
-if (isset($_POST['editar_btn'])) {
-    $_SESSION['ID_assistido'] = $_POST['ID_assistido'];
-    header('Location: editarAssistido.php');
-    exit();
-}
 
 ?>
 
@@ -42,11 +71,11 @@ if (isset($_POST['editar_btn'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- /Bootstrap -->
 
-    <title>Assistidos</title>
+    <title>Usuários</title>
 
 </head>
 
-<body>
+<body class="telaUsuario">
 
     <header>
         <nav class="navbar sticky-top">
@@ -65,19 +94,22 @@ if (isset($_POST['editar_btn'])) {
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 nav-underline">
                             <li class="nav-item">
-                                <a class="nav-link" href="./telaInicial.php">Tela inicial</a>
+                                <a class="nav-link" href="./ADMusuarios.php">Usuários</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./assistidos.php">Assistidos</a>
+                                <a class="nav-link" href="./ADMtelaInicial.php">Tela inicial</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./avaliacoes">Avaliações</a>
+                                <a class="nav-link" href="./ADMassistidos.php">Assistidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./consultas">Consultas</a>
+                                <a class="nav-link" href="./ADMavaliacoes">Avaliações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./relatorio">Relatório</a>
+                                <a class="nav-link" href="./ADMconsultas">Consultas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./ADMrelatorio">Relatório</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../sair.php">Sair</a>
@@ -88,6 +120,7 @@ if (isset($_POST['editar_btn'])) {
             </div>
         </nav>
     </header>
+
 
     <section class="hero-site">
         <div class="interface">
@@ -114,17 +147,20 @@ if (isset($_POST['editar_btn'])) {
 
                     <div class="d-flex flex-column mb-3">
                         <div class="p-2">
-                            <img class="d-block mx-auto" src="../Imagens/fotokid.png" alt="" height="155">
+                            <img class="d-block mx-auto" src="../Imagens/adulto.png" alt="" height="155">
                         </div>
                         <div class="p-2">
-                            <h1 class="display-5 fw-bold text-body-emphasis">Seus assistidos</h1>
+                            <h1 class="display-5 fw-bold text-body-emphasis">Usuários</h1>
                         </div>
                         <div class="p-2">
-                            <p class="lead mb-4">Cadastre um novo assistido ou role para baixo para ver os já existentes.</p>
+                            <p class="lead mb-4">Cadastre um novo usuário, solicite recuperação de senhas e veja os dados cadastrados.</p>
                         </div>
                         <div class="p-2">
-                            <button class="btn btn-primary d-inline-flex align-items-center " type="button">
-                                <a href="./ADMcadastrarUsuario.php" class="text-white text-decoration-none">Cadastrar usuário</a>
+                            <button class="btn btn-primary d-inline-flex align-items-center m-2" type="button">
+                                <a href="./cadastrarUsuario.php" class="text-white text-decoration-none">Cadastrar usuario</a>
+                            </button>
+                            <button class="btn btn-primary d-inline-flex align-items-center m-2" type="button">
+                                <a href="./ADMsenhas.php" class="text-white text-decoration-none">Recuperar senha</a>
                             </button>
                         </div>
                     </div>
@@ -149,19 +185,25 @@ if (isset($_POST['editar_btn'])) {
 
             <div class="text-center card h-100">
                 <div class="card-header">
-                    <div class="fs-5 fw-light">Responsável: ' . $row['nome_responsavel'] . '</div>
-                    <div class="fs-5 fw-light">Parentesco: ' . $row['parentesco'] . '</div>
+                    <div class="fs-5 fw-light">';
+
+                    if ($row['ID_usuario'] == 1) echo 'Usuário comum';
+                    else if ($row['ID_usuario'] == 2) echo 'Adiministrador';
+
+                    echo '</div>
+                    <div class="fs-5 fw-light">Nome: ' . $row['nome'] . '</div> 
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title fw-bold">Nome assistido : ' . $row['nome_assistido'] . '</h5>
-                    <div class="fs-5 fw-light">Idade cognitiva: ' . $row['idade_cognitiva'] . '</div>
-                    <div class="fs-5 fw-light">Nascimento: ' . $row['data_nascimento'] . '</div>
-                    <div class="fs-5 fw-light">Encaminhamento: ' . $row['encaminhamento'] . '</div>
+                    <div class="fs-5 fw-light">CPF: ' . $row['CPF'] . '</div>
                 </div>
                 <div class="card-footer text-body-secondary">
                     <form method="POST" action="">
-                        <input type="submit" name="editar_btn" value="Editar" class="btn btn-primary">
-                        <input type="hidden" name="ID_assistido" value="' . $row['ID_assistido'] . '">
+                        <input type="submit" name="excluir_btn" value="Excluir" class="btn btn-primary">';
+
+                    if ($row['ID_usuario'] == 1) echo '<input type="submit" name="ADM_btn" value="Tornar ADM" class="btn btn-primary m-2">';
+                    echo '    
+                        <input type="hidden" name="CPF" value="' . $row['CPF'] . '">
+                        <input type="hidden" name="ID_usuario" value="' . $row['ID_usuario'] . '">
                     </form>
                 </div>
             </div>
