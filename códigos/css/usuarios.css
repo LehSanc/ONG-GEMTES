@@ -1,4 +1,4 @@
-/* estilo tela assistidos*/
+/*usuários*/
 
 :root {
     --branco: white;
@@ -17,7 +17,7 @@
 
 body {
     height: 100vh;
-    background-image: url(../Imagens/quebraCabeca.png);
+    background-image: url(../Imagens/foto3.png);
     background-position: right;
     background-size: cover;
     background-repeat: no-repeat;
@@ -42,6 +42,11 @@ section.hero-site {
 
 .card {
     background-color: #ffffff00 !important;
+    border: none !important;
+}
+
+.card-codigo {
+    background-color: #ffffffe7 !important;
     border: none !important;
 }
 

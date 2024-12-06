@@ -20,7 +20,7 @@ $result = $stmt->get_result(); //obter resultado
 
 if (isset($_POST['editar_btn'])) {
     $_SESSION['ID_assistido'] = $_POST['ID_assistido'];
-    header('Location: editarAssistido.php');
+    header('Location: ADMeditarAssistido.php');
     exit();
 }
 
@@ -52,7 +52,7 @@ if (isset($_POST['editar_btn'])) {
         <nav class="navbar sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+                    <img src="../Imagens/logoGemtes.png" alt="Gemtes" width="200" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -74,13 +74,13 @@ if (isset($_POST['editar_btn'])) {
                                 <a class="nav-link" href="./ADMassistidos.php">Assistidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMavaliacoes">Avaliações</a>
+                                <a class="nav-link" href="./ADMavaliacoes.php">Avaliações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMconsultas">Consultas</a>
+                                <a class="nav-link" href="./ADMconsultas.php">Consultas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMrelatorio">Relatório</a>
+                                <a class="nav-link" href="./ADMrelatorio.php">Relatório</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../sair.php">Sair</a>
@@ -128,7 +128,7 @@ if (isset($_POST['editar_btn'])) {
                         </div>
                         <div class="p-2">
                             <button class="btn btn-primary d-inline-flex align-items-center " type="button">
-                                <a href="./cadastrarAssistido.php" class="text-white text-decoration-none">Cadastrar assistido</a>
+                                <a href="./ADMcadastrarAssistido.php" class="text-white text-decoration-none">Cadastrar assistido</a>
                             </button>
                         </div>
                     </div>

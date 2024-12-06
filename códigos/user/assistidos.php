@@ -52,7 +52,7 @@ if (isset($_POST['editar_btn'])) {
         <nav class="navbar sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+                    <img src="../Imagens/logoGemtes.png" alt="Gemtes" width="200" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -71,13 +71,13 @@ if (isset($_POST['editar_btn'])) {
                                 <a class="nav-link" href="./assistidos.php">Assistidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./avaliacoes">Avaliações</a>
+                                <a class="nav-link" href="./avaliacoes.php">Avaliações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./consultas">Consultas</a>
+                                <a class="nav-link" href="./consultas.php">Consultas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./relatorio">Relatório</a>
+                                <a class="nav-link" href="./relatorio.php">Relatório</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../sair.php">Sair</a>

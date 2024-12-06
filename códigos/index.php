@@ -167,12 +167,13 @@ $mysqli->close();
 <body>
 
   <header>
-    <nav class="navbar fixed-top">
-      <div class="container m-0 p-0">
+    <nav class="navbar sticky-top">
+      <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="./Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+          <img src="./Imagens/logoGemtes.png" alt="Gemtes" width="200" height="50">
         </a>
       </div>
+    </nav>
 
     </nav>
   </header>
@@ -214,7 +215,7 @@ $mysqli->close();
 
           <div class="card-body text-center">
             <div class="d-flex flex-row mb-3 align-items-center">
-              <div class="p-2 container-sm">
+              <div class="p-2 container-sm bloquinhos">
                 <img src="./Imagens/bloquinhos.png" class="img-thumbnail" alt="...">
               </div>
 

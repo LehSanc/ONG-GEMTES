@@ -1,61 +1,6 @@
 <?php
-include("../conexao.php");
-include("../protect.php");
-include("../codigo.php");
-protect();
 
-$mensagem = [];
-$string = "abcdefghijklmnopqrstuvwxyz1234567890";
-$codigo = palavra_aleatoria($string) . palavra_aleatoria($string) . palavra_aleatoria($string);
-$mostrarcodigo = false;
 
-function verificarCPF($cpf)
-{
-    global $mensagem, $mysqli;
-
-    if (!is_numeric($cpf) || strlen($cpf) != 11) {
-        $mensagem[] = "CPF inválido.";
-        return false;
-    } else {
-
-        $stmt = $mysqli->prepare("SELECT * FROM usuarios WHERE `CPF` = '$cpf'"); // Preparar a consulta
-        if ($stmt === false)
-            die("Erro na preparação: " . $mysqli->error);
-
-        $stmt->execute(); //executar consulta
-        $result = $stmt->get_result(); //obter resultado
-
-        if ($result->num_rows > 0) {
-            return true;
-        } else {
-            $mensagem[] = "O CPF informado não está cadastrado no sistema.";
-            return false;
-        }
-        $stmt->close();
-    }
-}
-
-if (isset($_POST['CPF'])) {
-    $CPF = $_POST['CPF'];
-
-    if (verificarCPF($CPF)) {
-        $stmt = $mysqli->prepare("UPDATE `usuarios` set `codigo`= '$codigo' where `CPF` = '$CPF'"); // Preparar a consulta
-        if ($stmt === false) {
-            die("Erro na preparação: " . $mysqli->error);
-        }
-
-        $stmt->execute(); //executar consulta
-
-        if ($stmt->affected_rows > 0) {
-            $mostrarcodigo = true;
-        } else {
-            $mensagem[] = "Erro ao efetuar operação.";
-        }
-        $stmt->close();
-    }
-}
-
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +10,7 @@ $mysqli->close();
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/usuarios.css" class="css">
+    <link rel="stylesheet" href="../css/avaliacoes.css" class="css">
     <link rel="stylesheet" href="../css/responsive.css" class="css">
 
     <!-- Bootstrap -->
@@ -74,7 +19,7 @@ $mysqli->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- /Bootstrap -->
 
-    <title>Recuperar senha</title>
+    <title>Avaliações</title>
 
 </head>
 
@@ -124,6 +69,7 @@ $mysqli->close();
         </nav>
     </header>
 
+
     <section class="hero-site">
         <div class="interface">
 
@@ -144,80 +90,50 @@ $mysqli->close();
                 </div>
             </div>
 
-            <div class="container px-5">
+            <div class="container py-5">
 
-                <h3 class="py-5">Recuperar senha</h3>
+                <h3 class="py-2">Cadastrar avaliação</h3>
 
                 <form class="needs-validation row g-3" method="POST" action="" novalidate>
-                    <div class="col-md-6 mb-5">
-                        <label for="CPF" class="form-label">CPF</label>
-                        <input type="number" class="form-control" id="CPF" name="CPF" required />
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
-                            Gerar código
-                        </button>
+
+                    <div class="col-md-8">
+                        <div class="col-md-8">
+                            <label for="campo_texto" class="form-label">
+                                <div class="d-flex flex-column mb-3">
+                                    <div class="p-2">
+                                        <div class="fw-bold">Passo 1: </div> Descreva qual informação é esperada de forma objetiva.
+                                    </div>
+                                    <div class="p-2">Campo de texto que sugira uma resposta:</div>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" id="campo_texto" name="campo_texto" placeholder="Exemplo: 'Dados para orientação:' " required />
+                        </div>
                     </div>
 
-                    <div class="col-12 pt-5">
-                        <?php if ($mostrarcodigo): ?>
-                            <div class="d-flex justify-content-center">
-                                <div class="card card-codigo w-75 mb-3">
-                                    <div class="card-header d-flex justify-content-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16" title="Copiar" onclick="copiarConteudo('codigo')" alt="Copiar">
-                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
-                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
-                                        </svg>
-                                    </div>
-                                    <div class="card-header d-flex justify-content-center">
-                                        Código para definir uma senha.
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <blockquote class="blockquote mb-0" id="codigo">
-                                            <p><?php echo $codigo; ?></p>
-                                        </blockquote>
-                                    </div>
-                                </div>
+                    <div class="col-md-8">
+                        <div class="d-flex flex-column mb-3">
+                            <div class="p-2">
+                                <div class="fw-bold">Passo 2: </div> Selecione qual é o formato da resposta.
                             </div>
-                        <?php endif; ?>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="campo_vazio" id="campo_vazio">
+                            <label class="form-check-label" for="campo_vazio">
+                                Campo de texto vazio
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="opcoes" id="opcoes">
+                            <label class="form-check-label" for="opcoes">
+                                Opções para selecionar
+                            </label>
+                        </div>
                     </div>
                 </form>
             </div>
-
         </div>
+
     </section>
-
-    <script>
-        function copiarConteudo(elementId) {
-            // Obtém o elemento pelo ID
-            var codigoElement = document.getElementById(elementId);
-
-            // Obtém o conteúdo de texto dentro do elemento
-            var codigoText = codigoElement.innerText || codigoElement.textContent;
-
-            // Copia o conteúdo para a área de transferência
-            navigator.clipboard.writeText(codigoText);
-        }
-    </script>
-
-    <script>
-        (() => {
-            'use strict'
-
-            const forms = document.querySelectorAll('.needs-validation')
-
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

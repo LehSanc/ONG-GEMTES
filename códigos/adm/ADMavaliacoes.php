@@ -1,61 +1,24 @@
 <?php
 include("../conexao.php");
 include("../protect.php");
-include("../codigo.php");
 protect();
 
 $mensagem = [];
-$string = "abcdefghijklmnopqrstuvwxyz1234567890";
-$codigo = palavra_aleatoria($string) . palavra_aleatoria($string) . palavra_aleatoria($string);
-$mostrarcodigo = false;
 
-function verificarCPF($cpf)
-{
-    global $mensagem, $mysqli;
-
-    if (!is_numeric($cpf) || strlen($cpf) != 11) {
-        $mensagem[] = "CPF inválido.";
-        return false;
-    } else {
-
-        $stmt = $mysqli->prepare("SELECT * FROM usuarios WHERE `CPF` = '$cpf'"); // Preparar a consulta
-        if ($stmt === false)
-            die("Erro na preparação: " . $mysqli->error);
-
-        $stmt->execute(); //executar consulta
-        $result = $stmt->get_result(); //obter resultado
-
-        if ($result->num_rows > 0) {
-            return true;
-        } else {
-            $mensagem[] = "O CPF informado não está cadastrado no sistema.";
-            return false;
-        }
-        $stmt->close();
-    }
+$stmt = $mysqli->prepare("SELECT * FROM `avaliacoes`"); // Preparar a consulta
+if ($stmt === false) {
+    die("Erro na preparação: " . $mysqli->error);
 }
 
-if (isset($_POST['CPF'])) {
-    $CPF = $_POST['CPF'];
+$stmt->execute(); //executar consulta
+$result = $stmt->get_result(); //obter resultado
 
-    if (verificarCPF($CPF)) {
-        $stmt = $mysqli->prepare("UPDATE `usuarios` set `codigo`= '$codigo' where `CPF` = '$CPF'"); // Preparar a consulta
-        if ($stmt === false) {
-            die("Erro na preparação: " . $mysqli->error);
-        }
-
-        $stmt->execute(); //executar consulta
-
-        if ($stmt->affected_rows > 0) {
-            $mostrarcodigo = true;
-        } else {
-            $mensagem[] = "Erro ao efetuar operação.";
-        }
-        $stmt->close();
-    }
+if (isset($_POST['editar_btn'])) {
+    $_SESSION['ID_avaliacao'] = $_POST['ID_avaliacao'];
+    header('Location: ADMeditarAvaliacao.php');
+    exit();
 }
 
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +28,7 @@ $mysqli->close();
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/usuarios.css" class="css">
+    <link rel="stylesheet" href="../css/avaliacoes.css" class="css">
     <link rel="stylesheet" href="../css/responsive.css" class="css">
 
     <!-- Bootstrap -->
@@ -74,7 +37,7 @@ $mysqli->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- /Bootstrap -->
 
-    <title>Recuperar senha</title>
+    <title>Avaliações</title>
 
 </head>
 
@@ -124,6 +87,7 @@ $mysqli->close();
         </nav>
     </header>
 
+
     <section class="hero-site">
         <div class="interface">
 
@@ -144,80 +108,72 @@ $mysqli->close();
                 </div>
             </div>
 
-            <div class="container px-5">
+            <div class="card text-center">
+                <div class="card-body">
 
-                <h3 class="py-5">Recuperar senha</h3>
+                    <div class="d-flex flex-column mb-3">
+                        <div class="p-2">
+                            <h1 class="display-5 fw-bold text-body-emphasis">Avaliações</h1>
+                        </div>
+                        <div class="p-2">
+                            <p class="lead mb-4">Cadastre novas avaliações ou acesse as existentes.</p>
+                        </div>
+                        <div class="p-2">
+                            <button class="btn btn-primary d-inline-flex align-items-center " type="button">
+                                <a href="./ADMcadastrarAvaliacao.php" class="text-white text-decoration-none">Cadastrar avaliação</a>
+                            </button>
+                        </div>
+                    </div>
 
-                <form class="needs-validation row g-3" method="POST" action="" novalidate>
-                    <div class="col-md-6 mb-5">
-                        <label for="CPF" class="form-label">CPF</label>
-                        <input type="number" class="form-control" id="CPF" name="CPF" required />
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
-                            Gerar código
-                        </button>
-                    </div>
-
-                    <div class="col-12 pt-5">
-                        <?php if ($mostrarcodigo): ?>
-                            <div class="d-flex justify-content-center">
-                                <div class="card card-codigo w-75 mb-3">
-                                    <div class="card-header d-flex justify-content-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16" title="Copiar" onclick="copiarConteudo('codigo')" alt="Copiar">
-                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
-                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
-                                        </svg>
-                                    </div>
-                                    <div class="card-header d-flex justify-content-center">
-                                        Código para definir uma senha.
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <blockquote class="blockquote mb-0" id="codigo">
-                                            <p><?php echo $codigo; ?></p>
-                                        </blockquote>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </form>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <script>
-        function copiarConteudo(elementId) {
-            // Obtém o elemento pelo ID
-            var codigoElement = document.getElementById(elementId);
+    <section class="result-cards">
 
-            // Obtém o conteúdo de texto dentro do elemento
-            var codigoText = codigoElement.innerText || codigoElement.textContent;
+        <div class="row row-cols-1 row-cols-md-3 g-4">
 
-            // Copia o conteúdo para a área de transferência
-            navigator.clipboard.writeText(codigoText);
-        }
-    </script>
+            <?php
 
-    <script>
-        (() => {
-            'use strict'
+            $editar =   '<form method="POST" action="">
+                            <input type="submit" name="editar_btn" value="Editar" class="btn btn-primary">
+                            <input type="hidden" name="ID_avaliacao" value="' . $row['ID_avaliacao'] . '">
+                        </form>';
 
-            const forms = document.querySelectorAll('.needs-validation')
+            $naoEditar = '<div class="fs-5 fw-light">Apenas autores podem fazer alterações</div>';
 
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
+            if ($result->num_rows > 0) {
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-    </script>
+                while ($row = $result->fetch_assoc()) {
+                    echo '
+
+        <div class="col">
+
+            <div class="text-center card avaliacao h-100">
+                <div class="card-header">
+                    <div class="fs-5 fw-light"> ' . $row['nome_avaliacao'] . '</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Autor: ' . $row['nome_autor'] . '</h5>
+                    <div class="fs-5 fw-light">Data: ' . date($row['encaminhamento']) . '</div>
+                </div>
+                <div class="card-footer text-body-secondary">
+                ' . $_SESSION['CPF'] == $row['CPF_autor'] ? $editar : $naoEditar . '
+                    
+                </div>
+            </div>
+
+        </div>';
+                }
+                $stmt->close(); //fechar declaração
+            }
+            ?>
+
+        </div>
+
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

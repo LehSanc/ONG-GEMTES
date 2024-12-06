@@ -15,6 +15,17 @@
 
 /* estilo do body */
 
+body {
+    height: 100vh;
+    background-image: url(../Imagens/telaInicial.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    width: 100%;
+}
+
 .interface {
     padding: 2%;
 }

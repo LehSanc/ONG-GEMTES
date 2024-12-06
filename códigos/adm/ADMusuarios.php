@@ -62,7 +62,7 @@ $result = $stmt->get_result(); //obter resultado
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/assistidos.css" class="css">
+    <link rel="stylesheet" href="../css/usuarios.css" class="css">
     <link rel="stylesheet" href="../css/responsive.css" class="css">
 
     <!-- Bootstrap -->
@@ -75,13 +75,13 @@ $result = $stmt->get_result(); //obter resultado
 
 </head>
 
-<body class="telaUsuario">
+<body>
 
     <header>
         <nav class="navbar sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+                    <img src="../Imagens/logoGemtes.png" alt="Gemtes" width="200" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -103,13 +103,13 @@ $result = $stmt->get_result(); //obter resultado
                                 <a class="nav-link" href="./ADMassistidos.php">Assistidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMavaliacoes">Avaliações</a>
+                                <a class="nav-link" href="./ADMavaliacoes.php">Avaliações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMconsultas">Consultas</a>
+                                <a class="nav-link" href="./ADMconsultas.php">Consultas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./ADMrelatorio">Relatório</a>
+                                <a class="nav-link" href="./ADMrelatorio.php">Relatório</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../sair.php">Sair</a>

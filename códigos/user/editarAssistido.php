@@ -89,7 +89,7 @@ $stmt->close();
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/dadosAssistidos.css" class="css">
+    <link rel="stylesheet" href="../css/assistidos.css" class="css">
     <link rel="stylesheet" href="../css/responsive.css" class="css">
 
     <!-- Bootstrap -->
@@ -108,7 +108,7 @@ $stmt->close();
         <nav class="navbar sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../Imagens/logoGemtes.png" alt="Bootstrap" width="200" height="50">
+                    <img src="../Imagens/logoGemtes.png" alt="Gemtes" width="200" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -127,13 +127,13 @@ $stmt->close();
                                 <a class="nav-link" href="./assistidos.php">Assistidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./avaliacoes">Avaliações</a>
+                                <a class="nav-link" href="./avaliacoes.php">Avaliações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./consultas">Consultas</a>
+                                <a class="nav-link" href="./consultas.php">Consultas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./relatorio">Relatório</a>
+                                <a class="nav-link" href="./relatorio.php">Relatório</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../sair.php">Sair</a>
@@ -165,7 +165,7 @@ $stmt->close();
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container py-5">
 
                 <h3 class="py-2">Cadastrar assistido</h3>
 

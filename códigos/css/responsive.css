@@ -7,16 +7,7 @@
         display: none;
     }
 
-    .telaInicial {
-        background-image: url(../Imagens/bloquinhos.png);
-    }
-
     .card.img-adulto {
         display: none;
-    }
-
-    .telaUsuario {
-        background-image: url(../Imagens/quebraCabecaMobile.png);
-        background-position: left;
     }
 }
